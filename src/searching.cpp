@@ -1,0 +1,7 @@
+class Search{
+
+  void binarySearch(){
+
+  }
+
+}
