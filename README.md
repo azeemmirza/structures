@@ -20,12 +20,10 @@ We have conducted and will continue to conduct rigorous benchmarks to compare th
 
 The usability of Structures is designed to match Python's standards, making it a compelling choice for a wide range of modern development projects. Say goodbye to envy and embrace the power and ease of Structures Library for your JavaScript and TypeScript development needs.
 
-### Trees Structures:
- - Binary Tree
- - Binary Search Tree
- - AVL Tree
- - Red Black Tree
- - Binary Indexed Tree
+## Index
+ 
+- [Contributing](./CONTRIBUTING.md)
+- [Scope](./SCOPE.md)
 
 
 ## License
