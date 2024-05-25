@@ -1,22 +1,25 @@
 import { Node } from './node';
 
-export class SinglyLinkedList<T> {
+export class DoublyLinkedList<T> {
     private head: Node<T> | null;
+    private tail: Node<T> | null;
 
     constructor() {
         this.head = null;
+        this.tail = null;
     }
 
     add(data: T): void {
         const newNode = new Node(data);
         if (!this.head) {
             this.head = newNode;
+            this.tail = newNode;
         } else {
-            let current = this.head;
-            while (current.next) {
-                current = current.next;
+            newNode.prev = this.tail;
+            if (this.tail) {
+                this.tail.next = newNode;
             }
-            current.next = newNode;
+            this.tail = newNode;
         }
     }
 
