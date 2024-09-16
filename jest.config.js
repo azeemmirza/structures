@@ -5,6 +5,10 @@ module.exports = {
     '<rootDir>/tests/**/*.test.ts',
     '<rootDir>/tests/**/*.test.js'
   ],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1"
+  },
+  resolver: null,
   collectCoverage: true,
   coverageReporters: ['clover', 'json', 'lcov', ['text', { skipFull: true }], "json-summary"],
   coverageDirectory: 'coverage',

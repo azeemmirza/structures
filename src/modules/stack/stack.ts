@@ -1,6 +1,8 @@
-import { Optional } from '@/types';
-import { StackOverflowError } from '@/utils';
+import { Maybe } from '@/types';
+import { StackEmptyError, StackOverflowError, StackUnderFlowError } from '@/utils';
 import { StackOptionsI } from '@/interfaces';
+
+const MAX_OPTIONS_SIZE = 100;
 
 /**
  * Stack class for managing a stack data structure.
@@ -12,14 +14,14 @@ export class Stack<E> {
    * @type {Array<E>}
    * @protected
    */
-  protected _elements: Array<E> = [];
+  protected _elements: Array<E>;
 
   /**
    * The options for the stack.
    * @type {StackOptionsI}
    * @private
    */
-  private readonly _options: StackOptionsI = {};
+  private readonly _options: StackOptionsI;
 
    /**
    * Creates a new Stack.
@@ -27,13 +29,13 @@ export class Stack<E> {
    * @param {StackOptionsI} [options] - The options for the stack.
    */
   constructor(elements?: Array<E>, options?: StackOptionsI) {
-    if (elements) {
-      this._elements = [...elements];
-    }
+    this._options = {}
+    this._options.maxSize = options?.maxSize || MAX_OPTIONS_SIZE
+    const elementsLength = elements?.length || 0
 
-    if (options) {
-      this._options = options;
-    }
+    if ((this._options.maxSize - elementsLength) < 0) throw new StackOverflowError();
+
+    this._elements = elements ? structuredClone(elements) : [];
   }
 
   push(element: E): boolean {
@@ -46,28 +48,34 @@ export class Stack<E> {
     return true;
   }
 
-  pop(): Optional<E> {
-    return this._elements.pop();
+  pop(): Maybe<E> {
+    if (this.isEmpty())  {
+      throw new StackUnderFlowError()
+    }
+    return this._elements.pop() ?? null;
   }
 
   get size(): number {
     return this._elements.length;
   }
 
-  get peek(): Optional<E> {
-    return this._elements[this._elements.length - 1];
+  get peek(): Maybe<E> {
+    if (this.isEmpty())  {
+      throw new StackEmptyError()
+    }
+    return this._elements[this.size - 1] ?? null;
   }
 
-  get top(): Optional<E> {
+  get top(): Maybe<E> {
     return this.peek;
   }
 
   isEmpty(): boolean {
-    return this._elements.length === 0;
+    return this.size === 0;
   }
 
   isFull(): boolean {
-    return this._options.maxSize ? this._elements.length === this._options.maxSize : true;
+    return this._options.maxSize ? this.size === this._options.maxSize : true;
   }
 
   print() {
